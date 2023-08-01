@@ -1,3 +1,6 @@
+Bakend OAUTH USER
+TABELA APLICAÇÃO - CREATE aplicação - NAME nome do projeto - EMAIL - PASSWORD_KEY a propria aplicação gera - USER_TESTE usuario para testar a aplicação - CPF - PASSWORD - LOGIN de outra aplicação com APP_ID e PASSWORD_KEY - APP_ID - PASSWORD_KEY
+
 # RESTful API Node Server Boilerplate
 
 [![Build Status](https://travis-ci.org/hagopj13/node-express-boilerplate.svg?branch=master)](https://travis-ci.org/hagopj13/node-express-boilerplate)
