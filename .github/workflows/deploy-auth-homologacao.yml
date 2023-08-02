@@ -1,9 +1,9 @@
-name: deploy-auth
+name: deploy-auth-homologacao
 
 on:
   push:
     branches: 
-      - master
+      - homologacao
     paths:
       - 'auth/**'
 
