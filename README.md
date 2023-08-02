@@ -1,5 +1,4 @@
-Bakend OAUTH USER
-TABELA APLICAÇÃO - CREATE aplicação - NAME nome do projeto - EMAIL - PASSWORD_KEY a propria aplicação gera - USER_TESTE usuario para testar a aplicação - CPF - PASSWORD - LOGIN de outra aplicação com APP_ID e PASSWORD_KEY - APP_ID - PASSWORD_KEY
+Backend oauth like a google oauth
 
 # RESTful API Node Server Boilerplate
 
@@ -32,9 +31,7 @@ If you would still prefer to do the installation manually, follow these steps:
 Clone the repo:
 
 ```bash
-git clone --depth 1 https://github.com/hagopj13/node-express-boilerplate.git
-cd node-express-boilerplate
-npx rimraf ./.git
+git clone https://github.com/adrianobarbosa1/oauth-user.git
 ```
 
 Install the dependencies:
@@ -223,11 +220,11 @@ The app has a centralized error handling mechanism.
 Controllers should try to catch the errors and forward them to the error handling middleware (by calling `next(error)`). For convenience, you can also wrap the controller inside the catchAsync utility wrapper, which forwards the error.
 
 ```javascript
-const catchAsync = require('../utils/catchAsync');
+const catchAsync = require("../utils/catchAsync");
 
 const controller = catchAsync(async (req, res) => {
   // this error will be forwarded to the error handling middleware
-  throw new Error('Something wrong happened');
+  throw new Error("Something wrong happened");
 });
 ```
 
@@ -247,14 +244,14 @@ The app has a utility ApiError class to which you can attach a response code and
 For example, if you are trying to get a user from the DB who is not found, and you want to send a 404 error, the code should look something like:
 
 ```javascript
-const httpStatus = require('http-status');
-const ApiError = require('../utils/ApiError');
-const User = require('../models/User');
+const httpStatus = require("http-status");
+const ApiError = require("../utils/ApiError");
+const User = require("../models/User");
 
 const getUser = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
 };
 ```
@@ -266,14 +263,18 @@ Request data is validated using [Joi](https://joi.dev/). Check the [documentatio
 The validation schemas are defined in the `src/validations` directory and are used in the routes by providing them as parameters to the `validate` middleware.
 
 ```javascript
-const express = require('express');
-const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const express = require("express");
+const validate = require("../../middlewares/validate");
+const userValidation = require("../../validations/user.validation");
+const userController = require("../../controllers/user.controller");
 
 const router = express.Router();
 
-router.post('/users', validate(userValidation.createUser), userController.createUser);
+router.post(
+  "/users",
+  validate(userValidation.createUser),
+  userController.createUser
+);
 ```
 
 ## Authentication
@@ -281,13 +282,13 @@ router.post('/users', validate(userValidation.createUser), userController.create
 To require authentication for certain routes, you can use the `auth` middleware.
 
 ```javascript
-const express = require('express');
-const auth = require('../../middlewares/auth');
-const userController = require('../../controllers/user.controller');
+const express = require("express");
+const auth = require("../../middlewares/auth");
+const userController = require("../../controllers/user.controller");
 
 const router = express.Router();
 
-router.post('/users', auth(), userController.createUser);
+router.post("/users", auth(), userController.createUser);
 ```
 
 These routes require a valid JWT access token in the Authorization request header using the Bearer schema. If the request does not contain a valid access token, an Unauthorized (401) error is thrown.
@@ -309,13 +310,13 @@ A refresh token is valid for 30 days. You can modify this expiration time by cha
 The `auth` middleware can also be used to require certain rights/permissions to access a route.
 
 ```javascript
-const express = require('express');
-const auth = require('../../middlewares/auth');
-const userController = require('../../controllers/user.controller');
+const express = require("express");
+const auth = require("../../middlewares/auth");
+const userController = require("../../controllers/user.controller");
 
 const router = express.Router();
 
-router.post('/users', auth('manageUsers'), userController.createUser);
+router.post("/users", auth("manageUsers"), userController.createUser);
 ```
 
 In the example above, an authenticated user can access this route only if that user has the `manageUsers` permission.
@@ -331,14 +332,14 @@ Import the logger from `src/config/logger.js`. It is using the [Winston](https:/
 Logging should be done according to the following severity levels (ascending order from most important to least important):
 
 ```javascript
-const logger = require('<path to src>/config/logger');
+const logger = require("<path to src>/config/logger");
 
-logger.error('message'); // level 0
-logger.warn('message'); // level 1
-logger.info('message'); // level 2
-logger.http('message'); // level 3
-logger.verbose('message'); // level 4
-logger.debug('message'); // level 5
+logger.error("message"); // level 0
+logger.warn("message"); // level 1
+logger.info("message"); // level 2
+logger.http("message"); // level 3
+logger.verbose("message"); // level 4
+logger.debug("message"); // level 5
 ```
 
 In development mode, log messages of all severity levels will be printed to the console.
@@ -354,8 +355,8 @@ Note: API request information (request url, response code, timestamp, etc.) are 
 The app also contains 2 custom mongoose plugins that you can attach to any mongoose model schema. You can find the plugins in `src/models/plugins`.
 
 ```javascript
-const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const mongoose = require("mongoose");
+const { toJSON, paginate } = require("./plugins");
 
 const userSchema = mongoose.Schema(
   {
@@ -367,7 +368,7 @@ const userSchema = mongoose.Schema(
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 ```
 
 ### toJSON
@@ -396,7 +397,7 @@ The `options` param can have the following (optional) fields:
 
 ```javascript
 const options = {
-  sortBy: 'name:desc', // sort order
+  sortBy: "name:desc", // sort order
   limit: 5, // maximum results per page
   page: 2, // page number
 };
