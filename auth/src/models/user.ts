@@ -38,6 +38,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: [true, "CPF não pode ficar vazio"],
     },
+    avatar: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
